@@ -27,7 +27,7 @@ This repository hosts the open-access mammalian **OXTR** protein sequence datase
 ---
 
 ## Research Question
-**How conserved are the primary amino acid sequence features and key physicochemical properties — including molecular weight, theoretical isoelectric point, instability index, aliphatic index, and hydrophobic versus hydrophilic amino acid composition — of the Oxytocin Receptor across mammalian species exhibiting contrasting social structures?**
+**How conserved are the primary amino acid sequence features and key physicochemical properties including molecular weight, theoretical isoelectric point, instability index, aliphatic index, and hydrophobic versus hydrophilic amino acid composition of the Oxytocin Receptor across mammalian species exhibiting contrasting social structures?**
 
 ---
 
