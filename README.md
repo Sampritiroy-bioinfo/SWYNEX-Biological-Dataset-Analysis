@@ -12,7 +12,7 @@
 - **Research Question**
 - **Why This Dataset Was Chosen**
 - **Dataset Source, Size, and Accession Inventory**
-- **Repository Structure and Gradual Development Plan**
+- **Repository Structure**
 - **Tools and Public Databases**
 - **Internship Workflow**
 - **Author**
