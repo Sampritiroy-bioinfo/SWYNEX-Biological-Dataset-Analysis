@@ -1,9 +1,9 @@
-#  SWYNEX-Biological-Dataset-Analysis
+# SWYNEX-Biological-Dataset-Analysis
 
 ## Comparative Sequence and Physicochemical Profiling of the Mammalian Oxytocin Receptor Across Contrasting Social Phenotypes
 
 **Internship Program:** SWYNEX Technologies — Bioinformatics Internship  
-**Intern:** Sampriti Roy | B.Sc. Biotechnology
+**Intern:** Sampriti Roy | B.Sc. Biotechnology, Panskura Banamali College
 
 ---
 
@@ -11,10 +11,10 @@
 - **About the Project**
 - **Research Question**
 - **Why This Dataset Was Chosen**
-- **Dataset Source, Size, and Accession Inventory**
+- **Task 1 — Biological Dataset Selection and Provenance**
+- **Task 2 — Data Cleaning, Physicochemical Profiling, and Homology Analysis**
 - **Repository Structure**
 - **Tools and Public Databases**
-- **Internship Workflow**
 - **Author**
 
 ---
@@ -22,7 +22,7 @@
 ## About the Project
 The **Oxytocin Receptor**, encoded by the **OXTR** gene, is a Class A G-protein-coupled receptor expressed in the central nervous system and peripheral tissues. It mediates the neuroendocrine signaling of the hypothalamic nonapeptide hormone **oxytocin**, which regulates social recognition, pair-bonding, maternal care, emotional regulation, and stress response modulation.
 
-This repository hosts the open-access mammalian **OXTR** protein sequence dataset retrieved from the National Center for Biotechnology Information, along with complete documentation of data provenance, dataset size, sequence accession identifiers, and evolutionary rationale.
+This repository hosts the open-access mammalian **OXTR** protein sequence dataset retrieved from the National Center for Biotechnology Information, along with cleaned canonical FASTA sequences, physicochemical property summaries, pairwise sequence homology metrics, and full documentation of data provenance and evolutionary rationale.
 
 ---
 
@@ -39,8 +39,9 @@ This repository hosts the open-access mammalian **OXTR** protein sequence datase
 
 ---
 
-## Dataset Source, Size, and Accession Inventory
+## Task 1 — Biological Dataset Selection and Provenance
 
+- **Workflow Step:** Retrieved mammalian OXTR protein batch records in FASTA format from NCBI Protein, verified RefSeq accession identifiers and exact amino acid sequence lengths, and documented dataset provenance and research scope.
 - **Primary Public Repository:** National Center for Biotechnology Information — NCBI Protein and RefSeq Databases
 - **Repository Web Portal:** https://www.ncbi.nlm.nih.gov/protein/
 - **File Format:** Standard Multi-FASTA amino acid sequence files with `.fasta` extension
@@ -58,8 +59,8 @@ This repository hosts the open-access mammalian **OXTR** protein sequence datase
 | 5 | **Leopard** | *Panthera pardus* | Predominantly solitary carnivore; behavioral contrast | `XP_019283838.2` | **388 aa** | `OXTR_Leopard.fasta` — Identical amino acid sequence to isoform `XP_019283837.2` |
 | 6 | **Bottlenose Dolphin** | *Tursiops truncatus* | Marine mammal with high social intelligence | `XP_019800237.1` | **391 aa** | `OXTR_Dolphin.fasta` — Single full-length predicted RefSeq record |
 
-### Raw Batch Records Documented for Filtering in future 
-Because NCBI Protein batch downloads include multiple predicted isoforms and related search hits, the remaining **17 records** across the 6 raw FASTA files are cataloged transparently for removal during **Data Cleaning and Basic Analysis**:
+### Raw Batch Records Filtered During Data Cleaning
+Because NCBI Protein batch downloads include multiple predicted isoforms and related search hits, **17 redundant or non-target records** across the 6 raw FASTA files were cataloged and removed:
 
 - **Redundant or Extended Isoforms — 8 records:** Human `NP_001341582.1`, `NP_001341583.1`, `NP_001341584.1`, and `NP_001341585.1` at 389 aa each; Chimpanzee `XP_063661372.1` at 389 aa; Mouse `XP_036021816.1` at 388 aa; Guinea Pig extended isoform X1 `XP_003464143.2` at 414 aa; and Leopard `XP_019283837.2` at 388 aa.
 - **Truncated Partial Isoform — 1 record:** House Mouse OXTR isoform 2 `NP_001397175.1` at **75 aa**, lacking the N-terminal and transmembrane domains.
@@ -68,14 +69,63 @@ Because NCBI Protein batch downloads include multiple predicted isoforms and rel
 
 ---
 
-## Repository Structure 
-This repository is organized to support gradual development throughout the internship 
+## Task 2 — Data Cleaning, Physicochemical Profiling, and Homology Analysis
 
+### 1. Sequence Quality Verification and Cleaning Workflow
+- Filtered out all 17 redundant, truncated, and non-target records to retain one canonical full-length OXTR sequence per target species.
+- Verified that all 6 retained sequences start with an initiator Methionine residue `M`, contain zero ambiguous or stop characters, and maintain uniform full-length open reading frames between 388 and 391 amino acids.
+- Standardized all FASTA headers and compiled the cleaned dataset in `data/cleaned_fasta/OXTR_Cleaned_6Species.fasta`.
+
+### 2. Physicochemical Characterization via ExPASy ProtParam
+All six cleaned sequences were analyzed using **ExPASy ProtParam** and summarized statistically in Microsoft Excel:
+
+| Species | RefSeq Accession | Length | Molecular Weight Da | Theoretical pI | Asp and Glu Count | Arg and Lys Count | Instability Index | Stability Status | Aliphatic Index | GRAVY Score | Hydrophobic Residues Percent |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Human** — *Homo sapiens* | `NP_000907.2` | 389 aa | 42771.57 | 9.63 | 20 | 39 | 40.18 | Unstable | 109.67 | 0.520 | 52.70% |
+| **Chimpanzee** — *Pan troglodytes* | `XP_016795834.1` | 389 aa | 42833.64 | 9.63 | 20 | 39 | 40.04 | Unstable | 109.15 | 0.524 | 52.70% |
+| **House Mouse** — *Mus musculus* | `NP_001074616.1` | 388 aa | 42804.68 | 9.63 | 20 | 39 | 43.17 | Unstable | 110.39 | 0.533 | 51.80% |
+| **Guinea Pig** — *Cavia porcellus* | `XP_013001788.1` | 390 aa | 43290.00 | 9.38 | 22 | 37 | 40.73 | Unstable | 107.33 | 0.473 | 51.80% |
+| **Leopard** — *Panthera pardus* | `XP_019283838.2` | 388 aa | 42717.37 | 9.55 | 20 | 37 | 37.51 | Stable | 108.14 | 0.500 | 51.80% |
+| **Bottlenose Dolphin** — *Tursiops truncatus* | `XP_019800237.1` | 391 aa | 43019.87 | 9.22 | 24 | 38 | 39.19 | Stable | 109.34 | 0.536 | 52.40% |
+| **Mean Across 6 Species** | — | **389.17 aa** | **42906.19** | **9.51** | **21.00** | **38.17** | **40.14** | — | **109.00** | **0.514** | **52.20%** |
+| **Standard Deviation** | — | **1.17 aa** | **214.28** | **0.17** | **1.67** | **0.98** | **1.86** | — | **1.10** | **0.024** | **0.45%** |
+
+**Key Physicochemical Observations:**
+- **Membrane-Bound Hydrophobicity:** All six orthologs show consistently positive GRAVY scores from **0.473 to 0.536** and high hydrophobic amino acid proportions from **51.80% to 52.70%**, reflecting the seven hydrophobic transmembrane alpha-helices required for membrane integration as a Class A GPCR.
+- **Basic Isoelectric Point:** Theoretical pI values remain tightly basic across all mammals from **9.22 to 9.63** due to an excess of positively charged Arg and Lys residues over negatively charged Asp and Glu residues, supporting electrostatic interactions at intracellular G-protein coupling loops.
+- **High Thermal Stability:** Aliphatic index values range from **107.33 to 110.39**, indicating strong structural thermostability across diverse mammalian body temperatures.
+
+### 3. Pairwise Sequence Homology Against Human OXTR via NCBI BLASTp
+All six cleaned sequences were aligned against the Human OXTR reference sequence `NP_000907.2` using NCBI BLASTp:
+
+| Subject Species | RefSeq Accession | Subject Length | Max Score | Query Cover | E-value | Percent Identity | Evolutionary Conservation Note |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :--- |
+| **Human** — *Homo sapiens* | `NP_000907.2` | 389 aa | 786 | 100% | 0.0 | 100.00% | Self-alignment baseline reference |
+| **Chimpanzee** — *Pan troglodytes* | `XP_016795834.1` | 389 aa | 781 | 100% | 0.0 | 98.97% | Closest primate ortholog |
+| **Leopard** — *Panthera pardus* | `XP_019283838.2` | 388 aa | 650 | 96% | 0.0 | 93.03% | Solitary carnivore ortholog |
+| **House Mouse** — *Mus musculus* | `NP_001074616.1` | 388 aa | 659 | 96% | 0.0 | 91.96% | Social rodent model ortholog |
+| **Bottlenose Dolphin** — *Tursiops truncatus* | `XP_019800237.1` | 391 aa | 693 | 100% | 0.0 | 91.03% | Social marine mammal ortholog |
+| **Guinea Pig** — *Cavia porcellus* | `XP_013001788.1` | 390 aa | 674 | 96% | 0.0 | 89.04% | Caviomorph rodent ortholog |
+
+**Key Homology Observations:**
+- All mammalian orthologs achieved an **E-value of 0.0** and **Max Scores between 650 and 786**, confirming high evolutionary conservation of OXTR across mammalian orders.
+- Query coverage is **100%** in primates and dolphin and **96%** in rodents and leopard, demonstrating that minor sequence variation is localized to the N-terminal extracellular tail while the core transmembrane and ligand-binding domains remain strongly conserved.
+
+---
+
+## Repository Structure
 ```text
 SWYNEX-Biological-Dataset-Analysis/
 ├── data/
-│   ├── raw_fasta/              # Task 1: Unmodified NCBI multi-FASTA files for all 6 species
-│   └── cleaned_fasta/          # Task 2: Deduplicated canonical OXTR FASTA sequences
-├── analysis/                   # Task 2 and Task 3: ExPASy ProtParam tables, BLAST outputs, and Excel charts
-├── report/                     # Task 4: Final complete bioinformatics internship report in Word format
-└── README.md                   # Complete project overview, research question, rationale, and metadata
+│   ├── raw_fasta/
+│   │   ├── OXTR_Chimpanzee.fasta
+│   │   ├── OXTR_Dolphin.fasta
+│   │   ├── OXTR_Guinea Pig.fasta
+│   │   ├── OXTR_House Mouse.fasta
+│   │   ├── OXTR_Human.fasta
+│   │   └── OXTR_Leopard.fasta
+│   └── cleaned_fasta/
+│       └── OXTR_Cleaned_6Species.fasta
+├── analysis/
+│   └── OXTR_Task2_Cleaning & Summery.xlsx
+└── README.md
